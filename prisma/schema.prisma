@@ -21,7 +21,31 @@ model User {
   password   String
   isVerified Boolean  @default(false) @map("is_verified")
   role       Role
-  createdAt  DateTime @default(now()) @map("created_at")
+  createDat  DateTime @default(now()) @map("created_at")
+
+  tickets Event[]
 
   @@map("users")
+}
+
+model Topic {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  events Event[]
+
+  @@map("topics")
+}
+
+model Event {
+  id        Int      @id @default(autoincrement())
+  name      String
+  topic     Topic    @relation(fields: [topicId], references: [id])
+  createdAt DateTime @default(now()) @map("created_at")
+
+  participants User[]
+
+  topicId Int @map("topic_id")
+  @@map("events")
 }
